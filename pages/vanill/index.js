@@ -1,96 +1,22 @@
 import React, { useEffect, useRef, useState } from "react";
-// import "../../components/vanill";
-// import "../../components/vanilla.css";
 
 const index = () => {
-  const [wrapperWith, setWrapperWidth] = useState();
-  const [slidersRef, setSlidersRef] = useState();
-  const [sliderRef, setSliderRef] = useState();
   const [wrapperRef, setWrapperRef] = useState();
-  const [navLeftRef, setNavLeftRef] = useState();
-  const [navRightRef, setNavRightRef] = useState();
 
-  const sliders = useRef(null);
-  const slider = useRef(null);
   const wrapper = useRef(null);
-  const navLeft = useRef(null);
-  const navRight = useRef(null);
-  console.log("144", wrapperWith);
   //   var sliders = document.querySelectorAll(".slider-wrapper");
 
   useEffect(() => {
-    const slidersRef = sliders;
-    const sliderRef = slider.current.clientWidth;
-    const wrapperRef = wrapper.current.clientWidth;
-    const navLeftRef = navLeft.current;
-    const navRightRef = navRight.current;
-    setSlidersRef(slidersRef);
-    setSliderRef(sliderRef);
+    const wrapperRef = wrapper.current;
     setWrapperRef(wrapperRef);
-    setNavLeftRef(navLeftRef);
-    setNavRightRef(navRightRef);
-
-    if (typeof window != "undefined") {
-      window.addEventListener("resize", () => {
-        for (let i = 0; i < sliders.length; i++) {
-          setWrapperWidth(sliders[i]);
-        }
-      });
-    }
   }, []);
 
-  console.log("143", slidersRef);
-  console.log("144", sliderRef);
-  console.log("145", wrapperRef);
-  console.log("146", navLeftRef);
-  console.log("1847", navRightRef);
-  for (let i = 0; i < sliders.length; i++) {
-    setWrapperWidth(sliders[i]);
-    console.log("sss", sliders[i]);
-
-    slider.addEventListener("scroll", () => {
-      if (slider.scrollLeft === 0) navLeft.classList.add("disabled");
-      else navLeft.classList.remove("disabled");
-
-      if (slider.scrollLeft >= wrapperRef - sliderRef)
-        navRight.classList.add("disabled");
-      else navRight.classList.remove("disabled");
-    });
-  }
-
-  function transition(el, from, to, dir, cb) {
-    let inc = from;
-    let spd = 20;
-    let interval = setInterval(() => {
-      if (inc >= to) {
-        clearInterval(interval);
-        spd = to - inc;
-        cb(); // callback
-      }
-      el.scrollLeft =
-        dir === "right" ? el.scrollLeft + spd : el.scrollLeft - spd;
-      inc += spd;
-    }, 8);
-  }
   const leftSide = (e) => {
-    navRightRef.classList.remove("disabled");
-    transition(slider, 0, sliderRef, "left", () => {
-      if (slider.scrollLeft == 0) navLeftRef.classList.add("disabled");
-    });
+    wrapperRef.scrollLeft -= 180;
   };
   const rightSide = (e) => {
-    transition(slider, 0, sliderRef, "right", () => {
-      if (slider.scrollLeft >= wrapperRef - sliderRef) {
-        navLeftRef.classList.add("disabled");
-      }
-    });
+    wrapperRef.scrollLeft += 180;
   };
-  //   function setWrapperWidth(sliderWrapper) {
-  //     let slider = sliderWrapper.querySelector(".slider");
-  //     let wrapper = slider.querySelector(".wrapper");
-  //     let slides = wrapper.querySelectorAll(".slide");
-  //     wrapper.style.width = slides.length * slides[0].clientWidth + "px";
-  //   }
 
   return (
     <>
@@ -98,8 +24,8 @@ const index = () => {
         <div className="container">
           <div id="todays-deals" className="section">
             <h3>Today's Deals</h3>
-            <div ref={sliders} className="slider-wrapper">
-              <div ref={slider} className="slider items">
+            <div className="slider-wrapper">
+              <div className="slider items">
                 <div ref={wrapper} className="wrapper">
                   <div className="item slide foot">
                     <figure>
@@ -772,18 +698,10 @@ const index = () => {
                 </div>
               </div>
               <nav>
-                <div
-                  onClick={(e) => leftSide(e)}
-                  ref={navLeft}
-                  className="left "
-                >
+                <div onClick={(e) => leftSide(e)} className="left ">
                   <i className="fas fa-chevron-left"></i>
                 </div>
-                <div
-                  ref={navRight}
-                  onClick={(e) => rightSide(e)}
-                  className="right"
-                >
+                <div onClick={(e) => rightSide(e)} className="right">
                   <i className="fas fa-chevron-right"></i>
                 </div>
               </nav>
